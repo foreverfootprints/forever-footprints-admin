@@ -1,6 +1,6 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "3b9b9cf5965f69ce88d63a3b2da1c65e"
+client_id = "f8d09dc927373f219ac9440c92579924"
 name = "forever-admin-app"
 handle = "forever-admin-app"
 application_url = "https://admin.forever-footprints.com"
