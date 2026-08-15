@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"/Users/david/Desktop/Forever Footprints Code\" && echo \"=== full forever-main/.env ===\" *)",
+      "Bash(npm -v)",
+      "Bash(grep -rn \"uploadmedia/\\\\${\" --include=\"*.js\" .)",
+      "Bash(node --check app/api/uploadmedia/route.js)",
+      "Bash(python3 -)",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami *)",
+      "WebSearch",
+      "WebFetch(domain:www.hostinger.com)",
+      "Bash(command -v node)",
+      "Bash(command -v npm)",
+      "Bash(brew list *)",
+      "Bash(command -v brew)",
+      "Bash(brew --version)",
+      "Read(//opt/homebrew/**)",
+      "Bash(command -v gh)",
+      "Bash(gh --version)",
+      "Bash(command -v git)",
+      "Bash(git --version)",
+      "Bash(gh auth *)",
+      "Bash(git config *)",
+      "Bash(git commit -m 'Initial commit: migrate media storage to Vercel Blob, fix NEXT_PUBLIC_DOMAIN, move transactional email to Google Workspace *)",
+      "Bash(ssh -T git@github.com -o BatchMode=yes -o ConnectTimeout=5)"
+    ]
+  }
+}
