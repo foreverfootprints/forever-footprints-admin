@@ -141,15 +141,19 @@ export const action = async ({ request }) => {
           "https://app.forever-footprints.com/api/order/",
           data
         );
-        console.log(response);
         return {
           success: true,
           message: "Qr code created successfully",
-          url: `https://app.forever-footprints.com/api/qrgenerator/qr-${data.orderId}.png`,
+          url: response.data.qrCode,
           status: 200,
         };
       } catch (error) {
-        
+        console.error("Error creating order/QR code:", error.response?.data || error.message);
+        return {
+          success: false,
+          message: "Failed to generate QR code",
+          status: 500,
+        };
       }
     }
 
