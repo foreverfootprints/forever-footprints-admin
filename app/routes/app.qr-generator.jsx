@@ -10,10 +10,11 @@ export const loader = async ({ request }) => {
   return null;
 };
 
-// Generates a QR code for the custom-frame product's video/audio clip.
-// The clip itself lives on YouTube/Vimeo (uploaded there manually after
-// pulling it off the order) — this just turns that link into a printable
-// QR code, reusing the same QR-generation pipeline as the tribute pages.
+// General-purpose QR code generator for any product that needs one printed
+// (the custom frame today, the LED acrylic block product later, etc). Paste
+// any link — usually a YouTube/Vimeo video hosted after pulling it off an
+// order — and get back a printable QR code, reusing the same QR-generation
+// pipeline as the tribute pages.
 export const action = async ({ request }) => {
   await authenticate.admin(request);
 
@@ -39,25 +40,26 @@ export const action = async ({ request }) => {
   }
 };
 
-export default function FrameQr() {
+export default function QrGenerator() {
   const fetcher = useFetcher();
   const [orderName, setOrderName] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
 
   const isLoading = fetcher.state !== "idle";
 
   const handleGenerate = () => {
-    fetcher.submit({ orderName, videoUrl }, { method: "post" });
+    fetcher.submit({ orderName, videoUrl: linkUrl }, { method: "post" });
   };
 
   return (
     <Page>
-      <TitleBar title="Frame QR Code" />
+      <TitleBar title="QR Code Generator" />
       <Card>
         <BlockStack gap="400">
           <Text as="p" variant="bodyMd">
-            After uploading the customer's video or audio clip to YouTube or Vimeo, paste that
-            link here to generate the QR code that gets printed on the frame.
+            Paste any link — usually a video hosted on YouTube or Vimeo after pulling it off an
+            order — to generate a printable QR code for it. Works for any product that needs one:
+            frames today, the LED acrylic block later.
           </Text>
 
           <TextField
@@ -69,14 +71,14 @@ export default function FrameQr() {
           />
 
           <TextField
-            label="YouTube / Vimeo link"
-            value={videoUrl}
-            onChange={setVideoUrl}
+            label="Link to encode"
+            value={linkUrl}
+            onChange={setLinkUrl}
             autoComplete="off"
             placeholder="https://youtube.com/watch?v=..."
           />
 
-          <Button variant="primary" onClick={handleGenerate} loading={isLoading} disabled={!videoUrl}>
+          <Button variant="primary" onClick={handleGenerate} loading={isLoading} disabled={!linkUrl}>
             Generate QR code
           </Button>
 

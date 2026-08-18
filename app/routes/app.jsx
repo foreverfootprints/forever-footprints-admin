@@ -22,7 +22,7 @@ export default function App() {
         <Link to="/app" rel="home">
           Home
         </Link>
-        <Link to="/app/frame-qr">Frame QR Code</Link>
+        <Link to="/app/qr-generator">QR Code Generator</Link>
       </NavMenu>
       <Outlet />
     </AppProvider>
