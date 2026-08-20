@@ -116,10 +116,34 @@ export const action = async ({ request }) => {
         }
 
         let orderidforview = orderId.split("/").pop();
+
+        // Fetch the real QR code URL from forever-main (same call the
+        // "Generate QR" button makes) instead of guessing a URL — that
+        // guessed path was never a real file-serving route and always 404'd.
+        let qrCodeUrl = null;
+        try {
+          const orderResponse = await axios.post(
+            "https://app.forever-footprints.com/api/order/",
+            {
+              orderId: orderidforview,
+              status: "pending",
+              redirectUrl: "",
+              items: order?.currentSubtotalLineItemsQuantity,
+              email: order?.customer?.email,
+            },
+          );
+          qrCodeUrl = orderResponse.data.qrCode;
+        } catch (error) {
+          console.error(
+            "Error fetching QR code after fulfillment:",
+            error.response?.data || error.message,
+          );
+        }
+
         return {
           success: true,
           message: "Fulfillment created successfully",
-          url: `https://app.forever-footprints.com/api/uploadmedia/qr-${orderidforview}.png`,
+          url: qrCodeUrl,
           status: 200,
         };
       } catch (error) {

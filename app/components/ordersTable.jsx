@@ -33,24 +33,6 @@ const OrdersTable = ({ orders, handleFullfil, handleDownloadQR }) => {
     currentPage * rowsPerPage,
   );
 
-  const handleView = async (id) => {
-    const orderidforview = id.split("/").pop();
-    window.open(
-      `https://app.forever-footprints.com/api/uploadmedia/qr-${orderidforview}.png`,
-      "_blank",
-    );
-
-  };
-
-  const handleQrDownload = async (id) => {
-    const orderidforview = id.split("/").pop();
-    window.open(
-      `https://app.forever-footprints.com/api/qrgenerator/qr-${orderidforview}.png`,
-      "_blank",
-    );
-
-  };
-
   const rows = displayedOrders.map((order) => [
     order.name,
     order.customer.email,
@@ -69,7 +51,7 @@ const OrdersTable = ({ orders, handleFullfil, handleDownloadQR }) => {
       ) : (
         <div style={{ display: "flex", gap: "10px" }}>
           <Badge progress="complete">Fulfilled</Badge>
-          <div><Button variant="secondary" onClick={()=>handleQrDownload(order.id)}>Download</Button></div>
+          <div><Button variant="secondary" onClick={()=>handleDownloadQR(order)}>Download</Button></div>
         </div>
       )}
     </div>
