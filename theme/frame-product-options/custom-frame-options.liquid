@@ -1,0 +1,193 @@
+{% comment %}
+  Custom Frame Options - combined, tag-controlled
+  --------------------------------------------------
+  Installs ONCE into the shared "frames" template (used by all 9 frame
+  products). The name/dates fields show by default for every product using
+  this template - except one tagged "no-name-dates", which skips them.
+
+  To make a product skip the name/dates fields (currently just
+  "Forever Footprints Memorial Frame"): open that product in Shopify admin ->
+  Tags field (right sidebar) -> add a tag called exactly: no-name-dates
+
+  All fields use Shopify's native line item properties - free, no app
+  required - and show up automatically on the order in Shopify admin.
+
+  Install this as a Custom Liquid block, placed right before the Add to
+  cart button, on the shared "frames" template. Do this once - it applies
+  to every product using that template.
+{% endcomment %}
+
+<div class="custom-frame-options">
+
+  {% unless product.tags contains 'no-name-dates' %}
+    <div class="custom-frame-options__field">
+      <label for="FrameName">
+        What is the name that you want used on the frame? <span aria-hidden="true">*</span>
+      </label>
+      <input
+        type="text"
+        id="FrameName"
+        name="properties[Name on Frame]"
+        placeholder="Example: Christine Frye"
+        required
+      >
+      <p class="custom-frame-options__hint">Please make sure the spelling is correct, how you want it to be displayed on the frame.</p>
+    </div>
+
+    <div class="custom-frame-options__row">
+      <div class="custom-frame-options__field">
+        <label for="BirthYear">
+          Birthdate Year <span aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="BirthYear"
+          name="properties[Birthdate Year]"
+          placeholder="Example: 1965"
+          required
+        >
+        <p class="custom-frame-options__hint">Double check date is correct.</p>
+      </div>
+
+      <div class="custom-frame-options__field">
+        <label for="DatePassed">
+          Date they passed <span aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="DatePassed"
+          name="properties[Date They Passed]"
+          placeholder="Example: 2025"
+          required
+        >
+        <p class="custom-frame-options__hint">Double check date is correct.</p>
+      </div>
+    </div>
+  {% endunless %}
+
+  <div class="custom-frame-options__field">
+    <label for="BibleVerseSelect">
+      Select Bible Verse <span aria-hidden="true">*</span>
+    </label>
+    <select id="BibleVerseSelect" name="properties[Bible Verse]" required>
+      <option value="" disabled selected>Please select</option>
+      <option value="John 3:16">John 3:16</option>
+      <option value="Isaiah 41:10">Isaiah 41:10</option>
+      <option value="John 14:27">John 14:27</option>
+      <option value="Revelation 21:4">Revelation 21:4</option>
+      <option value="Psalm 23:6">Psalm 23:6</option>
+      <option value="Matthew 5:4">Matthew 5:4</option>
+      <option value="John 11:25">John 11:25</option>
+      <option value="Other">Other - I'll write my own</option>
+    </select>
+  </div>
+
+  <div class="custom-frame-options__field custom-frame-options__other-verse" hidden>
+    <label for="BibleVerseOther">Your verse</label>
+    <input
+      type="text"
+      id="BibleVerseOther"
+      name="properties[Custom Bible Verse]"
+      placeholder="e.g. Psalm 23:1 - The Lord is my shepherd; I shall not want."
+    >
+  </div>
+
+  <div class="custom-frame-options__field">
+    <label for="FrameColor">
+      Select Frame Color <span aria-hidden="true">*</span>
+    </label>
+    <select id="FrameColor" name="properties[Frame Color]" required>
+      <option value="" disabled selected>Please select</option>
+      <option value="Black">Black</option>
+      <option value="White">White</option>
+      <option value="Maple">Maple</option>
+      <option value="Black Silver">Black Silver</option>
+      <option value="Black Gold">Black Gold</option>
+    </select>
+  </div>
+
+  <div class="custom-frame-options__field">
+    <label for="ProfilePhoto">
+      Profile Photo Upload <span aria-hidden="true">*</span>
+    </label>
+    <input
+      type="file"
+      id="ProfilePhoto"
+      name="properties[Profile Photo]"
+      accept="image/*"
+      required
+    >
+    <p class="custom-frame-options__hint">Please make sure the photo is high quality so it prints without issues.</p>
+  </div>
+
+  <div class="custom-frame-options__field">
+    <label for="VideoAudio">
+      Video or Audio Upload <span aria-hidden="true">*</span>
+    </label>
+    <input
+      type="file"
+      id="VideoAudio"
+      name="properties[Video or Audio Clip]"
+      accept="video/*,audio/*"
+      required
+    >
+    <p class="custom-frame-options__hint">A short clip (~30 seconds) is perfect - you'll host it yourself and generate the frame's QR code afterward using the QR Code Generator in the admin app.</p>
+  </div>
+
+</div>
+
+<script>
+  (function () {
+    var select = document.getElementById('BibleVerseSelect');
+    var otherField = document.querySelector('.custom-frame-options__other-verse');
+    if (!select || !otherField) return;
+    select.addEventListener('change', function () {
+      otherField.hidden = select.value !== 'Other';
+    });
+  })();
+</script>
+
+<style>
+  .custom-frame-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px 0 24px;
+  }
+
+  .custom-frame-options__row {
+    display: flex;
+    gap: 16px;
+  }
+
+  .custom-frame-options__row .custom-frame-options__field {
+    flex: 1;
+  }
+
+  .custom-frame-options__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .custom-frame-options__field label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .custom-frame-options__field input[type="file"],
+  .custom-frame-options__field input[type="text"],
+  .custom-frame-options__field select {
+    font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+  }
+
+  .custom-frame-options__hint {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+  }
+</style>

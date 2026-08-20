@@ -259,24 +259,6 @@ export default function Index() {
         setTrackingNumber("");
         setSelected(carrierServicesOptions[0].value);
 
-        // const order = orders.find((order) => order.id === selectedOrder);
-
-        // async function postToForever() {
-        //   const response = await axios.post(
-        //     "https://app.forever-footprints.com/api/order/",
-        //     {
-        //       status: "pending",
-        //       redirectUrl: "",
-        //       items: order.currentSubtotalLineItemsQuantity,
-        //       email: order.customer.email,
-        //     },
-        //   );
-
-        //   console.log("response:", response);
-        // }
-
-        // postToForever();
-
         setIsLoading(false);
         setFormActive(false);
       } else {
