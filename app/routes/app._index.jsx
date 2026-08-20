@@ -5,21 +5,18 @@ import {
   TextField,
   Select,
   Button,
-  Card,
   InlineGrid,
   Modal,
-  TextContainer,
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
-import { fetchAllOrders } from "../graphql/graphql";
+import { fetchAllOrders, executeGraphQL } from "../graphql/graphql";
 import {
   getAllOrdersQuery,
   getFulfillmentOrdersQuery,
   fulfillmentCreateMutation,
   getCarrierServicesQuery,
 } from "../graphql/graphqlQuery";
-import { executeGraphQL } from "../graphql/graphql";
 import OrdersTable from "../components/ordersTable";
 import { updateOrderFulfillmentStatus } from "../helper/helper";
 import axios from "axios";
@@ -187,7 +184,7 @@ export const action = async ({ request }) => {
 };
 
 export default function Index() {
-  const { orders, carrierServices, carrierServicesOptions } = useLoaderData();
+  const { orders, carrierServicesOptions } = useLoaderData();
   const fetcher = useFetcher();
   const [shopOrders, setShopOrders] = useState(orders);
   const [formActive, setFormActive] = useState(false);
@@ -248,9 +245,8 @@ export default function Index() {
 
   useEffect(() => {
     if (fetcher.state === "idle" && fetcher.data) {
-      const { success, message, error, url } = fetcher.data;
-      console.log(url);
-      
+      const { success, url } = fetcher.data;
+
       if (success) {
         setOpenQrModal(url);
         console.log("success");
@@ -288,6 +284,11 @@ export default function Index() {
         setIsLoading(false);
       }
     }
+    // Deliberately keyed only on fetcher state/data - this should react to a
+    // new fetcher response, not to our own resulting state updates (adding
+    // shopOrders/selectedOrder/carrierServicesOptions would re-run the body
+    // every time this effect sets them, re-processing the same response).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.state, fetcher.data]);
 
   return (

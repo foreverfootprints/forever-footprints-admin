@@ -40,7 +40,7 @@ const OrdersTable = ({ orders, handleFullfil, handleDownloadQR }) => {
     order.shippingAddress.name,
     order.billingAddress.name,
     new Date(order.createdAt).toLocaleDateString(),
-    <div>
+    <div key={order.id}>
       {order.fulfillments[0]?.status !== "SUCCESS" ? (
         <div style={{ display: "flex", gap: "10px" }}>
           <Button onClick={() => handleFullfil(order.id)} variant="primary">
